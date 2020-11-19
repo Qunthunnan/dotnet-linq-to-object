@@ -65,18 +65,21 @@ namespace dotnet_linq_to_object
               new Student(){id = 4, firstName = "A7", lastName = "B2", age = 19, avgScore = 8, groupId = 12 },
               new Student(){id = 6, firstName = "A9", lastName = "B3", age = 18, avgScore = 8.5, groupId = 13 }
             };
-            
-            var result = students.GroupBy(s => s.groupId).Select(
+
+            var result = students
+                .Where(s => s.lastName.Length <= 2)
+                .GroupBy(s => s.groupId)
+                .Select(
               (gr) => new {
                 GroupName = groups.Where(g => g.id == gr.Key).SingleOrDefault()?.name ?? "Unknown Group",
                 StudentsCount = gr.Count(),
                 StudentsAvgScore = gr.Average((s) => s.avgScore)
               }
             );
+
             foreach (var item in result)
             {
               Console.WriteLine(item);
-              // Console.WriteLine("g");
             }
         }
     }
